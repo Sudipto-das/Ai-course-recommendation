@@ -17,6 +17,6 @@ app.use(cors(corsOptions));
 app.options("/{*any}", cors(corsOptions))
 app.use(cookieParser());
 app.use('/api/auth', authRoutes);
-app.use('/api/course', courseRoutes)
+app.use('/api/courses', courseRoutes)
 
 module.exports = app;
