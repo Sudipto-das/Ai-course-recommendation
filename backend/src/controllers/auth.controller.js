@@ -30,6 +30,7 @@ exports.signup = async (req, res) => {
 
 
 
+
 exports.login = async (req, res) => {
     try {
         const { email, password } = req.body;
@@ -69,3 +70,21 @@ exports.login = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
+
+exports.getMe = async (req, res) => {
+    try {
+        const admin = await Admin.findById(req.admin.id).select("-password");
+        if (!admin) {
+            return res.status(404).json({ message: "Admin not found" });
+        }
+        res.json({ admin });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
+exports.logout = async (req, res) => {
+    res.clearCookie("token");
+    res.json({ message: "Logged out successfully" });
+};
+

@@ -1,10 +1,11 @@
-'use client';
+﻿"use client";
 
-import Link from 'next/link';
-import { Button } from '@/components/ui/button';
-import { Compass, Sparkles, UserCog } from 'lucide-react';
-import { usePathname } from 'next/navigation';
-import { cn } from '@/lib/utils';
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { Compass, Sparkles, UserCog, LogOut, Loader2 } from "lucide-react";
+import { usePathname } from "next/navigation";
+import { cn } from "@/lib/utils";
+import { useAuth } from "@/context/AuthContext";
 
 const Logo = () => (
   <Link href="/" className="flex items-center gap-2 text-primary hover:text-accent transition-colors">
@@ -26,6 +27,8 @@ const NavLink = ({ href, children }: { href: string; children: React.ReactNode }
 }
 
 export default function Header() {
+  const { isAuthenticated, isLoading, logout, admin } = useAuth();
+
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-card/80 backdrop-blur-md">
       <div className="container mx-auto flex h-16 items-center px-4">
@@ -49,12 +52,29 @@ export default function Header() {
         </div>
         
         <div className="flex flex-1 items-center justify-end gap-2">
-          <Button variant="ghost" size="sm" asChild>
-            <Link href="/admin/login">
-              <UserCog className="mr-2 h-4 w-4" />
-              Admin
-            </Link>
-          </Button>
+          {isLoading ? (
+            <Loader2 className="h-4 w-4 animate-spin" />
+          ) : isAuthenticated ? (
+            <>
+              <Button variant="ghost" size="sm" asChild>
+                <Link href="/admin/dashboard">
+                  <UserCog className="mr-2 h-4 w-4" />
+                  Dashboard
+                </Link>
+              </Button>
+              <Button variant="ghost" size="sm" onClick={logout}>
+                <LogOut className="mr-2 h-4 w-4" />
+                Logout
+              </Button>
+            </>
+          ) : (
+            <Button variant="ghost" size="sm" asChild>
+              <Link href="/admin/login">
+                <UserCog className="mr-2 h-4 w-4" />
+                Admin
+              </Link>
+            </Button>
+          )}
         </div>
       </div>
     </header>

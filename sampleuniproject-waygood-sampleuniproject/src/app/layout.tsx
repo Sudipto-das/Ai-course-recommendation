@@ -1,12 +1,13 @@
-import type { Metadata } from 'next';
-import './globals.css';
-import { Toaster } from '@/components/ui/toaster';
-import Header from '@/components/header';
-import { cn } from '@/lib/utils';
+﻿import type { Metadata } from "next";
+import "./globals.css";
+import { Toaster } from "@/components/ui/toaster";
+import Header from "@/components/header";
+import { cn } from "@/lib/utils";
+import { AuthProvider } from "@/context/AuthContext";
 
 export const metadata: Metadata = {
-  title: 'Course Compass',
-  description: 'Find your perfect course and university.',
+  title: "Course Compass",
+  description: "Find your perfect course and university.",
 };
 
 export default function RootLayout({
@@ -24,10 +25,12 @@ export default function RootLayout({
           rel="stylesheet"
         />
       </head>
-      <body className={cn('font-body antialiased min-h-screen flex flex-col')}>
-        <Header />
-        <main className="flex-grow">{children}</main>
-        <Toaster />
+      <body className={cn("font-body antialiased min-h-screen flex flex-col")}>
+        <AuthProvider>
+          <Header />
+          <main className="flex-grow">{children}</main>
+          <Toaster />
+        </AuthProvider>
       </body>
     </html>
   );
